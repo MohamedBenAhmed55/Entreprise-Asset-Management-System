@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: eams-backend
+
+  # H2 In-Memory Database Configuration
+  datasource:
+    url: jdbc:h2:mem:eamsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  # Enable the H2 web console (Accessible at http://localhost:8080/h2-console)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # We use 'validate' because Flyway manages the schema, not Hibernate
+      ddl-auto: validate
+    show-sql: true # Great for debugging during development
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+# Clean up console logs so they aren't so noisy
+logging:
+  level:
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    com.mohamed.eams: DEBUG
