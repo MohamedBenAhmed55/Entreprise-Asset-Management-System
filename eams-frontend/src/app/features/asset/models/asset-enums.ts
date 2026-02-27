@@ -1,0 +1,13 @@
+export enum AssetType {
+  LAPTOP = 'LAPTOP',
+  MONITOR = 'MONITOR',
+  SERVER = 'SERVER',
+  MOBILE_DEVICE = 'MOBILE_DEVICE'
+}
+
+export enum AssetStatus {
+  AVAILABLE = 'AVAILABLE',
+  IN_USE = 'IN_USE',
+  MAINTENANCE = 'MAINTENANCE',
+  RETIRED = 'RETIRED'
+}
