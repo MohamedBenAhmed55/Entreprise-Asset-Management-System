@@ -7,11 +7,17 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 
+import { ConfirmationService } from 'primeng/api';
+
 export const appConfig: ApplicationConfig = {
   providers: [
-  provideZoneChangeDetection({ eventCoalescing: true }),
-  provideRouter(routes),
-  provideHttpClient(withFetch()),
-  provideAnimationsAsync(),
-  providePrimeNG({theme: {preset: Lara}})]
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: { preset: Lara }
+    }),
+    {provide: ConfirmationService, useClass: ConfirmationService},
+  ]
 };
