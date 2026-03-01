@@ -90,7 +90,68 @@ export const AssetStore = signalStore(
             )
           )
         )
-      )
+      ),
+      createAsset: rxMethod<any>(
+        pipe(
+          tap(() => patchState(store, { loading: true })),
+          switchMap((payload) =>
+            assetApi.createAsset(payload).pipe(
+              tap((newAsset: Asset) => {
+                // Prepend the new asset to the top of the list
+                patchState(store, {
+                  assets: [newAsset, ...store.assets()],
+                  totalElements: store.totalElements() + 1,
+                  loading: false
+                });
+
+                messageService.add({
+                  severity: 'success',
+                  summary: 'Created',
+                  detail: 'Asset has been successfully created.',
+                  life: 3000
+                });
+              }),
+              catchError((error) => {
+                patchState(store, { loading: false });
+                return EMPTY; // Global error interceptor handles the toast
+              })
+            )
+          )
+        )
+      ),
+
+      updateAsset: rxMethod<any>(
+        pipe(
+          tap(() => patchState(store, { loading: true })),
+          switchMap((payload) =>
+            // Assuming your payload has the ID, and your API expects (id, payload)
+            assetApi.updateAsset(payload.id, payload).pipe(
+              tap((updatedAsset: Asset) => {
+                // Find the old asset and replace it with the new one from the backend
+                const updatedAssets = store.assets().map((asset) =>
+                  asset.id === updatedAsset.id ? updatedAsset : asset
+                );
+
+                patchState(store, {
+                  assets: updatedAssets,
+                  loading: false
+                });
+
+                messageService.add({
+                  severity: 'success',
+                  summary: 'Updated',
+                  detail: 'Asset has been successfully updated.',
+                  life: 3000
+                });
+              }),
+              catchError((error) => {
+                patchState(store, { loading: false });
+                return EMPTY;
+              })
+            )
+          )
+        )
+      ),
     };
   })
 );

@@ -44,4 +44,19 @@ export class AssetDashboardComponent implements OnInit {
       }
     })
   }
+
+  openCreateDialog() {
+    this.selectedAsset.set(null); // Null means "Create Mode"
+    this.dialogVisible.set(true);
+  }
+
+  onSaveAsset(payload: any) {
+    if (this.selectedAsset()) {
+      this.store.updateAsset(payload);
+    } else {
+      this.store.createAsset(payload);
+    }
+
+    this.dialogVisible.set(false);
+  }
 }

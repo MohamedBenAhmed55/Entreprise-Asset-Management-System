@@ -1,0 +1,20 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--surface-ground, #f8f9fa);
+}
+
+.content-area {
+  /* Push the content over by 250px to make room for the fixed sidebar */
+  margin-left: 250px;
+  padding: 2rem;
+  flex: 1;
+  /* Ensure the content scrolls independently if it gets too long */
+  overflow-y: auto;
+}
+
+/* Base resets to make PrimeNG look pristine */
+:host {
+  display: block;
+}

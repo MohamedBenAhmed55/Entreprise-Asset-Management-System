@@ -7,7 +7,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Asset} from '../../models/asset.model';
-import {AssetStatus as assetStatuses, AssetType as assetTypes} from '../../models/asset-enums';
+import {AssetStatus, AssetType} from '../../models/asset-enums';
 import {formatDateForBackend, parseDateFromBacked} from '../../../../shared/utils/date.utils';
 
 
@@ -41,14 +41,14 @@ export class AssetFormDialogComponent {
   form = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
     serialNumber: new FormControl<string>('', [Validators.required]),
-    type: new FormControl<string>(assetTypes.LAPTOP, [Validators.required]),
-    status: new FormControl<string>(assetStatuses.AVAILABLE, [Validators.required]),
+    type: new FormControl<string>(AssetType.LAPTOP, [Validators.required]),
+    status: new FormControl<string>(AssetStatus.AVAILABLE, [Validators.required]),
     purchaseDate: new FormControl<Date | null>(null, [Validators.required]),
     location: new FormControl<string>(''),
   })
 
-  assetTypes = [...assetTypes]
-  assetStatuses = [...assetStatuses]
+  assetTypes = Object.values(AssetType);
+  assetStatuses = Object.values(AssetStatus);
 
   constructor(){
     effect(() => {
@@ -60,14 +60,14 @@ export class AssetFormDialogComponent {
           purchaseDate: parseDateFromBacked(currentAsset.purchaseDate)
         } as any);
       } else {
-        this.form.reset({type: assetTypes.LAPTOP, status: assetStatuses.AVAILABLE})
+        this.form.reset({type: AssetType.LAPTOP, status: AssetStatus.AVAILABLE})
       }
     });
   }
 
   hideDialog() {
     this.visible.set(false)
-    this.form.reset({type: assetTypes.LAPTOP, status: assetStatuses.AVAILABLE})
+    this.form.reset({type: AssetType.LAPTOP, status: AssetStatus.AVAILABLE})
   }
 
   onSubmit() {
@@ -78,7 +78,7 @@ export class AssetFormDialogComponent {
 
     const formValue = this.form.getRawValue();
 
-    const payload = {
+    const payload : any = {
       ...formValue,
       purchaseDate: formatDateForBackend(formValue.purchaseDate)
     };
