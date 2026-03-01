@@ -4,6 +4,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap, catchError, EMPTY } from 'rxjs';
 import { AssetApiService } from '../services/asset-api.service';
 import { Asset } from '../models/asset.model';
+import {MessageService} from 'primeng/api';
 
 
 type AssetState = {
@@ -29,6 +30,7 @@ export const AssetStore = signalStore(
   withState<AssetState>(initialState),
   withMethods((store ) => {
     const assetApi = inject(AssetApiService);
+    const messageService = inject(MessageService);
 
     return {
       loadAssets: rxMethod<{ page: number; size: number }>(
@@ -60,6 +62,35 @@ export const AssetStore = signalStore(
       updatePagination: (page: number, size: number) => {
         patchState(store, { currentPage: page, pageSize: size });
       },
+      deleteAsset: rxMethod<number>(
+        pipe(
+          tap(() => patchState(store, {loading: true})),
+          switchMap((id) =>
+            assetApi.deleteAsset(id).pipe(
+              tap(() => {
+                const updatedAssets = store.assets().filter(asset => asset.id !== id);
+
+                patchState(store, {
+                  assets: updatedAssets,
+                  totalElements: store.totalElements() - 1, // Keep pagination accurate
+                  loading: false
+                });
+
+                messageService.add({
+                  severity: 'success',
+                  summary: 'Deleted',
+                  detail: 'Asset has been successfully deleted.',
+                  life: 3000
+                })
+              }),
+              catchError((error) => {
+                patchState(store, {loading: false});
+                return EMPTY;
+              })
+            )
+          )
+        )
+      )
     };
   })
 );

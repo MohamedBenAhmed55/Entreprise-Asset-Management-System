@@ -1,0 +1,25 @@
+<div class="dashboard-container">
+
+  <div class="header-section">
+    <h2>Asset Management</h2>
+    <p-button label="Add Asset" icon="pi pi-plus" (onClick)="openCreateDialog()"></p-button>
+  </div>
+
+  <app-asset-table
+    [assets]="store.assets()"
+    [totalElements]="store.totalElements()"
+    [pageSize]="store.pageSize()"
+    [loading]="store.loading()"
+    (pageChange)="onPageChange($event)"
+    (editAsset)="onEditAsset($event)"
+    (deleteAsset)="onDeleteAsset($event)">
+  </app-asset-table>
+
+  <app-asset-form-dialog
+    [(visible)]="dialogVisible"
+    [asset]="selectedAsset()"
+    [loading]="store.loading()"
+    (save)="onSaveAsset($event)">
+  </app-asset-form-dialog>
+
+</div>
