@@ -1,0 +1,22 @@
+.table-card {
+  background: var(--surface-card, #ffffff);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.font-bold {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.actions-header {
+  text-align: right;
+  padding-right: 2.5rem !important;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

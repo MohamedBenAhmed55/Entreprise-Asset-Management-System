@@ -1,0 +1,62 @@
+<p-dialog
+  [(visible)]="visible()"
+  [style]="{ width: '500px' }"
+  [header]="asset() ? 'Edit Asset' : 'Add New Asset'"
+  [modal]="true"
+  class="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" class="form-grid">
+      <div class="field">
+        <label for="name">Asset Name <span class="required">*</span></label>
+        <input pInputText id="name" formControlName="name" placeholder="e.g. ThinkPad T14">
+        <small class="p-error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched" >
+          Name is required.
+        </small>
+        <!-- alternative-->
+        <!--@if (form.get('name')?.invalid && form.get('name')?.touched){
+          <small class="p-error">
+            Name is required.
+          </small>
+        }-->
+      </div>
+
+      <div class="field">
+        <label for="serialNumber">Serial Number <span class="required">*</span></label>
+        <input pInputText id="serialNumber" formControlName="serialNumber" placeholder="e.g. PF2X9L" />
+        <small class="p-error" *ngIf="form.get('serialNumber')?.invalid && form.get('serialNumber')?.touched">
+          Serial Number is required.
+        </small>
+      </div>
+
+      <div class="field-row">
+        <div class="field half-width">
+          <label for="type">Type <span class="required">*</span></label>
+          <p-dropdown id="type" [options]="assetTypes" formControlName="type" appendTo="body"></p-dropdown>
+        </div>
+        <div class="field half-width">
+          <label for="status">Status <span class="required">*</span></label>
+          <p-dropdown id="status" [options]="assetStatuses" formControlName="status" appendTo="body"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="purchaseDate">Purchase Date <span class="required">*</span></label>
+        <p-datePicker id="purchaseDate" formControlName="purchaseDate" appendTo="body" dateFormat="yy-mm-dd"></p-datePicker>
+        <small class="p-error" *ngIf="form.get('purchaseDate')?.invalid && form.get('purchaseDate')?.touched">
+          Purchase Date is required.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="location">Location</label>
+        <input pInputText id="location" formControlName="location" placeholder="e.g. IT Storage Room" />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="hideDialog()"></p-button>
+    <p-button label="Save" icon="pi pi-check" [loading]="loading()" (onClick)="onSubmit()"></p-button>
+  </ng-template>
+
+</p-dialog>
