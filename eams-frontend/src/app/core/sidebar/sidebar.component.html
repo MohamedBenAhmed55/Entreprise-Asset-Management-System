@@ -1,0 +1,17 @@
+<aside class="sidebar">
+  <div class="logo-container">
+    <i class="pi pi-box logo-icon"></i>
+    <span class="logo-text">EAMS Pro</span>
+  </div>
+
+  <div class="nav-menu">
+    <ul>
+      <li *ngFor="let item of navItems">
+        <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
+          <i [class]="item.icon"></i>
+          <span>{{item.label}}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
